@@ -13,4 +13,11 @@ export REDIS_DB=0
 
 # MONGO
 export MONGO_HOST=mongodb://127.0.0.1:27017/
-export MONGO_DB=gateway
+export MONGO_DB=warehouse
+
+# MYSQL
+export MYSQL_HOSTNAME=localhost
+export MYSQL_USERNAME=root
+export MYSQL_PASSWORD=123456
+export MYSQL_PORT=3306
+export MYSQL_DATABASE=warehouse

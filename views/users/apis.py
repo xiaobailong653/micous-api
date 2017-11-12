@@ -2,6 +2,8 @@
 from views._view import BaseView
 from views._route import app
 from utils.error import UserNotFind
+from controllers.user import UserController
+
 
 __author__ = "Sunlf"
 
@@ -11,3 +13,11 @@ class UserInfo(BaseView):
     def get(self):
 
         raise UserNotFind()
+
+
+@app.route("/create")
+class UserCreate(BaseView):
+    def post(self):
+
+        UserController.user_save()
+        self.render(dict(code=1, message="success"))
