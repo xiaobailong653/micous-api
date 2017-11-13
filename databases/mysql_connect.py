@@ -9,11 +9,16 @@ from sqlalchemy import (
 from sqlalchemy.orm import (
     sessionmaker,
     mapper)
+from utils.decorators import Singleton
 
 
+
+@Singleton
 class MysqlHandler(object):
-    @classmethod
-    def create_engine(cls):
+    def __init__(self):
+        self._engine = self.create_engine()
+
+    def create_engine(self):
         host_info = "{1}:{2}@{0}:{3}/{4}".format(os.getenv("MYSQL_HOSTNAME"),
                                                  os.getenv("MYSQL_USERNAME"),
                                                  os.getenv("MYSQL_PASSWORD"),
@@ -23,13 +28,15 @@ class MysqlHandler(object):
         return create_engine("mysql+mysqldb://{0}?charset=utf8".format(host_info),
                              pool_recycle=3600)
 
-    @classmethod
-    def get_session(cls):
+    def get_session(self):
 
-        return sessionmaker(bind=cls.engine)()
+        return sessionmaker(bind=self._engine)()
 
-    @classmethod
-    def mapper_table(cls, t_name):
+    def create_all(self, base_class):
+
+        base_class.metadata.create_all(self._engine)
+
+    def mapper_table(self, t_name):
         table = Table(t_name, self.metadata, autoload=True)
 
         class Tmp(object):
