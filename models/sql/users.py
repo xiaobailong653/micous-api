@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from _base import Base
 from sqlalchemy import (
-    Column, 
+    Column,
     Integer,
     BigInteger,
     SmallInteger,
@@ -13,10 +13,11 @@ from sqlalchemy import (
 class Users(Base):
     __tablename__ = "users"
     user_id = Column(Integer, primary_key=True)
-    name = Column(String(32))
-    password = Column(String(64))
+    name = Column(String(32), nullable=False, index=True)
+    password = Column(String(64), nullable=False)
     gender = Column(SmallInteger())
     email = Column(String(64))
+    phone = Column(String(32))
     image = Column(String(128))
     country = Column(String(32))
     city = Column(String(32))
