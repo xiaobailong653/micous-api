@@ -11,13 +11,12 @@ __author__ = "Sunlf"
 @app.route("/info")
 class UserInfo(BaseView):
     def get(self):
-
-        raise UserNotFind()
+        info = UserController.user_info(1)
+        self.render(dict(info=info))
 
 
 @app.route("/create")
 class UserCreate(BaseView):
     def post(self):
-
         UserController.user_save()
         self.render(dict(code=1, message="success"))

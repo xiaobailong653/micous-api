@@ -2,11 +2,18 @@
 import os
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from databases.mysql_connect import MysqlHandler
-
+from sqlalchemy import create_engine
 
 __author__ = "Sunlf"
 
 
 Base = declarative_base()
-session = MysqlHandler().get_session()
+host_info = "{1}:{2}@{0}:{3}/{4}".format(os.getenv("MYSQL_HOSTNAME"),
+                                         os.getenv("MYSQL_USERNAME"),
+                                         os.getenv("MYSQL_PASSWORD"),
+                                         os.getenv("MYSQL_PORT"),
+                                         os.getenv("MYSQL_DATABASE"))
+
+engine = create_engine("mysql+mysqldb://{0}?charset=utf8".format(host_info),
+                       pool_recycle=3600)
+session = sessionmaker(bind=engine)()

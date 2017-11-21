@@ -12,7 +12,6 @@ from sqlalchemy.orm import (
 from utils.decorators import Singleton
 
 
-
 @Singleton
 class MysqlHandler(object):
     def __init__(self):
@@ -35,6 +34,13 @@ class MysqlHandler(object):
     def create_all(self, base_class):
 
         base_class.metadata.create_all(self._engine)
+
+    def new_id(self, name):
+        session = self.get_session()
+        sql = "UPDATE warehouse.global_id SET value=LAST_INSERT_ID(value+1) WHERE name='{}';SELECT LAST_INSERT_ID();".format(name)
+        print sql
+        new_id = session.execute(sql).fetchall()
+        print new_id
 
     def mapper_table(self, t_name):
         table = Table(t_name, self.metadata, autoload=True)
